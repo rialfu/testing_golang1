@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"rema/kredit/model"
 
@@ -11,6 +12,7 @@ import (
 type Service interface {
 	CreateAccount(data RegisterRequest) (model.User, int, error)
 	Login(data LoginRequest) (model.User, int, error)
+	UpdatePassword(oldPass string, newPass string, username string)(int, error)
 }
 
 type service struct {
@@ -49,6 +51,7 @@ func (s *service) CreateAccount(data RegisterRequest) (model.User, int, error) {
 	}
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
 	if err != nil {
+		
 		return model.User{}, http.StatusInternalServerError, err
 	}
 	User := model.User{
@@ -64,8 +67,10 @@ func (s *service) CreateAccount(data RegisterRequest) (model.User, int, error) {
 }
 func (s *service) UpdatePassword(oldPass string, newPass string, username string)(int, error) {
 	User, err := s.repo.FindUser(username)
+	fmt.Println(User, err)
 	err = bcrypt.CompareHashAndPassword([]byte(User.Password), []byte(oldPass))
 	if err != nil {
+		fmt.Println("failed hash")
 		return 401, errors.New("password salah")
 	}
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(newPass), bcrypt.DefaultCost)

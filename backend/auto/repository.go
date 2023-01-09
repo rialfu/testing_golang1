@@ -141,7 +141,13 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 	sc.sc_company=mct.company_short_name
 	`, time.Now().Format("2006-01-02")).
 	Find(&StagingCustomer)
-	fmt.Println("run")
+	fmt.Println("run validate")
+	if len(StagingCustomer) > 0{
+		fmt.Println(StagingCustomer[0:1])
+	}else{
+		fmt.Println(StagingCustomer)
+	}
+	
 	for _, el := range StagingCustomer{
 		var reason []string
 		if el.jumlah_ppk > 0{
@@ -392,6 +398,7 @@ func (r *repository) GenerateSkalaAngsuran()  {
 	r.db.Model(&model.LoanDataTab{}).Select("loan_data_tab.*").
 	Joins("join customer_data_tab  as cdt on loan_data_tab.custcode=cdt.custcode").
 	Where("approval_status=?","0").Scan(&result)
+	fmt.Println("generate skala")
 	fmt.Println(result)
 	for _, el :=range result{
 		LoanPeriod, err := strconv.ParseInt(el.LoanPeriod, 10, 8)

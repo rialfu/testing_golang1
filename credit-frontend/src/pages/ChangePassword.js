@@ -1,6 +1,10 @@
 import React, { memo, useState } from 'react'
-
+import {useStore} from '../Context/context'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
  function ChangePassword() {
+    const {state, dispatch} = useStore()
+    const navigate = useNavigate()
     const[form, setForm] = useState({"oldpass":"", "newpass":""})
     const changeValue = (e)=>{
         if(e.target.id === "inputNewPassword"){
@@ -8,6 +12,27 @@ import React, { memo, useState } from 'react'
         }else if(e.target.id === "inputPassword"){
             setForm({...form, oldpass:e.target.value})
         }
+    }
+    const send = async()=>{
+        const data = {username:state.user.username, old:form.oldpass, new:form.newpass}
+        try{
+            const res = await axios.post("http://localhost:8080/update-password", JSON.stringify(data))
+            localStorage.removeItem("account")
+            dispatch({type:"logout"}); 
+            alert("Berhasil update")
+            setTimeout(()=>{
+                navigate('/',{replace:true} )
+            }, 500)
+            
+        }catch(err){
+            if(err.response.status===401){
+                alert("gagal update")
+            }else{
+                alert("server sedang bermasalah")
+            }
+            
+        }
+        
     }
     return (
         <>
@@ -28,7 +53,7 @@ import React, { memo, useState } from 'react'
                                 <input type="password" className="form-control" id="inputNewPassword"  onChange={changeValue}/>
                             </div>
                         </div>
-                        <button className='btn btn-success'>Update</button>
+                        <button className='btn btn-success' onClick={send}>Update</button>
                     </div>
                 </div>
             </div>

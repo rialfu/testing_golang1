@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useStore } from "../Context/context"
 import  '../assets/custom.css'
 import { useNavigate } from "react-router-dom"
+import axios from 'axios'
 export default function Login(){
     const {state, dispatch} = useStore()
     const navigate = useNavigate()
@@ -16,8 +17,8 @@ export default function Login(){
         }
         setLoad(false)
         // userRef.current.focus()
-    }, [])
-    const login = ()=>{
+    }, [load])
+    const login = async ()=>{
         if(loadRef.current === false){
             loadRef.current = true
             if(username === "" || password ===""){
@@ -25,9 +26,27 @@ export default function Login(){
                 loadRef.current = false
                 return
             }
-            localStorage.setItem("account", JSON.stringify({username:"adimahesa", name:"Adi Mahesa"}))
-            dispatch({type:"set", payload:{username:"adimahesa", name:"Adi Mahesa"}})
-            navigate('/')
+            try{
+                const res =  await axios.post("http://localhost:8080/login",JSON.stringify({username, password}))
+                const {token, data} = res.data
+                dispatch({type:"set", payload:data})
+                localStorage.setItem("account", JSON.stringify(data))
+                setTimeout(()=>{
+                    navigate('/',{replace:true} )
+                }, 500)
+                loadRef.current = false
+                return
+            }catch(e){
+                if(e.response.status === 401){
+                    alert("Username atau password salah")
+                }else{
+                    alert("Server sedang bermasalah")
+                }
+                console.log()
+            }
+            // localStorage.setItem("account", JSON.stringify({username:"adimahesa", name:"Adi Mahesa"}))
+            // dispatch({type:"set", payload:{username:"adimahesa", name:"Adi Mahesa"}})
+            // navigate('/')
             loadRef.current = false
             return
             

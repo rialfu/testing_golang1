@@ -21,7 +21,7 @@ func SetupDb() (*gorm.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect database: %w", err)
 	}
-	if err := db.AutoMigrate(model.BranchTab{}, model.MstCompanyTab{},model.CustomerDataTab{}, model.LoanDataTab{},model.SkalaRentalTab{}, model.StagingCustomer{}, model.VehicleDataTab{}, model.StagingError{}); err != nil {
+	if err := db.AutoMigrate(model.BranchTab{}, model.MstCompanyTab{},model.CustomerDataTab{}, model.LoanDataTab{},model.SkalaRentalTab{}, model.StagingCustomer{}, model.VehicleDataTab{}, model.StagingError{}, model.User{}); err != nil {
 		return nil, fmt.Errorf("failed to migrate database: %w", err)
 	}
 

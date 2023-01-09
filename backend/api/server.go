@@ -25,21 +25,11 @@ func MakeServer(db *gorm.DB) *server {
 	cron := gocron.NewScheduler(time.UTC)
 	cron.Every(15).Minute().Do(func(){
 		automatic.GenerateSkalaAngsuran()
-		// Buatlah 1 Service Automatic Generate Skala Angsuran Debitur
-		// Scheduler Service Automatic Run For Checking data setiap 15 menit sekali.
-		// Data-data yang di-generate otomatis angsuran per bulan masing-masing debitur 
-// adalah data-data yang “approval_status” = 0
-// Data Angsuran tiap bulan masing-masing debitur yang di-generate tersebut diinsert 
-// ke Tabel “Skala_Rental_Tab”
-// Debitur yang skala angsurannya selesai degenerate secara otomatis, update “approval_status” = 1.
+		
 	})
 	cron.Every(30).Minute().Do(func(){
 		automatic.GenerateValidatePengajuanKredit()
-		// ervice Run secara schedular (Tiap 30 menit) 
-		// untuk membaca dan mem-proses validasi data dan insert data 
-		// pengajuan kredit pada table “Staging_Customer” berdasarkan:
-		// Create_date = Current_date
-		// SC_Flag = 0
+		
 	})
 	cron.StartAsync()
 	// s.GenerateSkalaAngsuran()

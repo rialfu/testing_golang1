@@ -1,6 +1,7 @@
 package api
 
 import (
+	"rema/kredit/auth"
 	"rema/kredit/kredit"
 
 	"github.com/gin-contrib/cors"
@@ -22,10 +23,16 @@ func (s *server) SetupRouter() {
 	kreditRepo := kredit.NewRepository(s.DB)
 	kreditService := kredit.NewService(kreditRepo)
 	kreditHandler := kredit.NewHandler(kreditService)
+	authRepo := auth.NewRepository(s.DB)
+	authService := auth.NewService(authRepo)
+	authHandler := auth.NewHandler(authService)
 	s.Router.GET("/checklist-pencairan", kreditHandler.HandleGetChecklistPencairan)
 	s.Router.POST("/checklist-pencairan", kreditHandler.HandleApprovePencairan)
 	s.Router.GET("/report-pencairan", kreditHandler.HandleGetDataReport)
 	s.Router.GET("/get-search", kreditHandler.HandleGetSearch)
+	s.Router.POST("/create-account", authHandler.CreateUser)
+	s.Router.POST("/login", authHandler.Login)
+	s.Router.POST("/update-password", authHandler.UpdatePassword)
 	// s.Router.GET('')
 	// authRepo := auth.NewRepository(s.DB)
 	// authService := auth.NewService(authRepo)

@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
 	"rema/kredit/custom"
 
@@ -40,6 +41,27 @@ func (h *Handler) CreateUser(c *gin.Context) {
 		"message": "success",
 	})
 
+}
+func (h *Handler) UpdatePassword(c *gin.Context){
+	var req UpdatePasswordRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		messageErr := custom.ParseError(err)
+		if messageErr == nil {
+			messageErr = []string{"Input data not suitable"}
+		}
+		c.JSON(http.StatusBadRequest, gin.H{"error": messageErr})
+		return
+	}
+	fmt.Println(req)
+	code, err :=h.Service.UpdatePassword(req.OldPassword, req.NewPassword, req.Username)
+	fmt.Println(err)
+	if err != nil{
+		c.JSON(code, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{
+		"message":"Berhasil",
+	})
 }
 func (h *Handler) Login(c *gin.Context) {
 	var req LoginRequest

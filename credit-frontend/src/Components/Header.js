@@ -194,7 +194,8 @@ export default function Header({click,active}){
                                 </li>
                                 <li>
                                     {/* <Link to="/login"><i className="lni lni-exit"></i> Sign Out</Link> */}
-                                    <a href="#0" onClick={()=>{
+                                    <a href="#0" onClick={(e)=>{
+                                        e.preventDefault()
                                         localStorage.removeItem("account")
                                         dispatch({type:"logout"}); 
                                         navigate('/login')
