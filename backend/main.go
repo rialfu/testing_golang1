@@ -13,9 +13,7 @@ func main() {
 	if err != nil{
 		panic(err)
 	}
-	// s := auto.NewRepository(db)
-	// s.GenerateSkalaAngsuran()
-	// s.GenerateValidatePengajuanKredit()
+	// 
 	server := api.MakeServer(db)
 	server.RunServer()
 
