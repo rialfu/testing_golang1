@@ -26,52 +26,16 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 	
 	type Result struct {
 		model.StagingCustomer
-		jumlah_ppk int
-		jumlah_company int
-		jumlah_branch int
-		jumlah_chasis int
-		jumlah_engine int
+		JumlahPpk int
+		JumlahCompany int
+		JumlahBranch int
+		JumlahChasis int
+		JumlahEngine int
+		// CompanyCode string
+		// model.StagingCustomer
 		CompanyCode string
 	}
 	var StagingCustomer []Result
-	
-	// currentTime := time.Now()
-	// r.db.Raw(`
-	// select sc.*, jumlah_ppk, jumlah_company, jumlah_branch, jumlah_engine, jumlah_chasis
-	// from staging_customer as sc 
-	// join(
-	// 	select sc.id,count(cdt.ppk) as jumlah_ppk from staging_customer sc 
-	// 	left join customer_data_tab as cdt on 
-	// 	sc.customer_ppk=cdt.ppk
-	// 	where sc_flag='0'
-	// 	group by sc.id
-	// ) as child1 on child1.id=sc.id
-	// join(
-	// 	select sc.id,count(mct.company_short_name) as jumlah_company from staging_customer sc 
-	// 	left join mst_company_tab as mct on 
-	// 	sc.sc_company=mct.company_short_name
-	// 	where sc_flag='0'
-	// 	group by sc.id
-	// ) as child2 on child2.id=sc.id
-
-
-	// join(
-	// 	select sc.id,count(bt.code) as jumlah_branch from staging_customer sc 
-	// 	left join branch_tab as bt on 
-	// 	sc.sc_branch_code=bt.code
-	// 	where sc_flag='0'
-	// 	group by sc.id
-	// ) as child3 on child3.id=sc.id
-	// join(
-	// 	select sc.id,count(vdt.engine_no) as jumlah_engine, count(vdt1.chasis_no) as jumlah_chasis from staging_customer sc 
-	// 	left join vehicle_data_tab as vdt on 
-	// 	sc.vehicle_engine_no=vdt.engine_no
-	// 	left join vehicle_data_tab as vdt1 on 
-	// 	sc.vehicle_chasis_no=vdt1.chasis_no
-	// 	where sc_flag='0'
-	// 	group by sc.id
-	// ) as child4 on child4.id=sc.id
-	// `).
 	
 	// r.db.Raw(`
 	// select 
@@ -79,8 +43,8 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 	// 	jumlah_company, 
 	// 	jumlah_branch, 
 	// 	jumlah_engine, 
-	// 	jumlah_chasis,
-	// 	company_code
+	// 	jumlah_chasis
+		
 	// from staging_customer as sc 
 	// join(
 	// 	select 
@@ -104,9 +68,9 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 	// 	where sc_flag='0' and sc_create_date = ?
 	// 	group by sc.id
 	// ) as child on child.id=sc.id
-	// left join mst_company_tab as mct on 
-	// sc.sc_company=mct.company_short_name
+	
 	// `, time.Now().Format("2006-01-02")).
+	//batas 1
 	r.db.Raw(`
 	select 
 		sc.*, jumlah_ppk, 
@@ -140,23 +104,27 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 	left join mst_company_tab as mct on 
 	sc.sc_company=mct.company_short_name
 	`, time.Now().Format("2006-01-02")).
-	Find(&StagingCustomer)
-	fmt.Println("run validate")
-	if len(StagingCustomer) > 0{
-		fmt.Println(StagingCustomer[0:1])
-	}else{
-		fmt.Println(StagingCustomer)
-	}
 	
+	Scan(&StagingCustomer)
+	fmt.Println("run validate")
+	
+	// fmt.Println("jumlah:",len(StagingCustomer), time.Now().Format("2006-01-02"))
+	// if len(StagingCustomer) > 0{
+	// 	fmt.Println(StagingCustomer[0].ID, StagingCustomer[0].JumlahBranch)
+	// }
+	
+	// return
+	gagal := 0
+	berhasil :=0
 	for _, el := range StagingCustomer{
 		var reason []string
-		if el.jumlah_ppk > 0{
+		if el.JumlahPpk > 0{
 			reason = append(reason, "Terjadi duplikasi PPK")
 		}
-		if el.jumlah_branch == 0 {
+		if el.JumlahBranch == 0 {
 			reason = append(reason, "Branch tidak terdaftar")
 		}
-		if el.jumlah_company == 0 {
+		if el.JumlahCompany == 0 {
 			reason = append(reason, "Company tidak terdaftar")
 		}
 		TglPk, err := time.Parse("2006-01-02", el.LoanTglPk)
@@ -188,10 +156,10 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 		if strings.TrimSpace(el.VehicleChasisNo) == "" {
 			reason = append(reason, "Nomor chasis tidak terisi")
 		}
-		if el.jumlah_chasis > 0 {
+		if el.JumlahChasis > 0 {
 			reason = append(reason, "Nomor chasis terduplikasi")
 		}
-		if el.jumlah_engine > 0 {
+		if el.JumlahEngine > 0 {
 			reason = append(reason, "Nomor engine terduplikasi")
 		}
 		
@@ -220,7 +188,8 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 				continue
 			}
 			tx.Commit()
-			
+			gagal = gagal + 1
+			fmt.Println(se)
 		}else{
 			BirthDate, err := time.Parse("2006-01-02 15:04:05", el.CustomerBirthDate)
 			if(err != nil){
@@ -384,11 +353,12 @@ func (r *repository) GenerateValidatePengajuanKredit()  {
 			}
 			fmt.Println("finish")
 			tx.Commit()
+			berhasil = berhasil +1
 
 		}
 		
 	}
-	// fmt.Println(StagingCustomer)
+	fmt.Println("gagal:", gagal, "berhasil:", berhasil)
 }
 func (r *repository) GenerateSkalaAngsuran()  {
 	type Result struct{

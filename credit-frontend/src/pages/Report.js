@@ -116,14 +116,14 @@ function Report(props){
                     <table className=" table">
                         <thead>
                             <tr>
-                                <th width={70}>No</th>
-                                <th width={170}>PPK</th>
-                                <th width={190}>Name</th>
-                                <th width={130}>Channeling Company</th>
-                                <th width={190}>Drawdown Date</th>
-                                <th width={190}>Loan Amount</th>
-                                <th width={190}>Loan Period</th>
-                                <th width={190}>Interest Eff</th>
+                                <th style={{fontSize:"1vw"}} >No</th>
+                                <th style={{fontSize:"1vw"}} >PPK</th>
+                                <th style={{fontSize:"1vw"}} >Name</th>
+                                <th style={{fontSize:"1vw"}} >Channeling Company</th>
+                                <th style={{fontSize:"1vw"}} >Drawdown Date</th>
+                                <th style={{fontSize:"1vw"}} >Loan Amount</th>
+                                <th style={{fontSize:"1vw"}} >Loan Period</th>
+                                <th style={{fontSize:"1vw"}} >Interest Eff</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -132,14 +132,14 @@ function Report(props){
                                     let no =(page - 1) *limit.current + (i +1)
                                     return(
                                         <tr key={i}>
-                                            <td>{no}</td>
-                                            <td>{data.ppk}</td>
-                                            <td>{data.name}</td>
-                                            <td>{data.channeling_company}</td>
-                                            <td>{data.drawdown_date.substring(0,10)}</td>
-                                            <td>{data.loan_amount}</td>
-                                            <td>{data.loan_period}</td>
-                                            <td>{data.interest_effective}</td>
+                                            <td style={{fontSize:"1vw"}}>{no}</td>
+                                            <td style={{fontSize:"1vw"}}>{data.ppk}</td>
+                                            <td style={{fontSize:"1vw"}}>{data.name}</td>
+                                            <td style={{fontSize:"1vw"}}>{data.channeling_company}</td>
+                                            <td style={{fontSize:"1vw"}}>{data.drawdown_date.substring(0,10)}</td>
+                                            <td style={{fontSize:"1vw"}}>{data.loan_amount}</td>
+                                            <td style={{fontSize:"1vw"}}>{data.loan_period}</td>
+                                            <td >{data.interest_effective}</td>
                                             
                                         </tr>
                                     )
