@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from "react"
 import axios from 'axios'
 import Pagination, { bootstrap5PaginationPreset } from 'react-responsive-pagination';
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 function Report(props){
     const [dataReport, setDataReport] = useState([])
     const [companyData, setCompanyData] = useState([])
@@ -17,9 +17,11 @@ function Report(props){
     
     useEffect(()=>{
         getCompany()
+        
     },[])
     useEffect(()=>{
-        getData()
+        getDataReport()
+        // getData()
     },[page])
     const changePage = (i)=>{
         setPage(i)
@@ -34,8 +36,8 @@ function Report(props){
         // setCompanyData(res.data.data)
     }
     
-    
-    const getData = async ()=>{
+        
+    const getDataReport = async ()=>{
         let url = `http://localhost:8080/report-pencairan?limit=${limit.current}&page=${page}`
         url += `&start=${startDate.current}&end=${endDate.current}&company=`
         url += `&branch=${branch.current}`
@@ -83,11 +85,11 @@ function Report(props){
                         <label htmlFor="">Branch</label>
                         <select id="branch" name="branch" defaultValue={''} className="form-control" 
                             onChange={(e)=>branch.current=e.target.value}>
-                        <option  value="">Pilih Branch</option>
+                        <option  value="">000 - All Branch</option>
                             {
                                 branchData.map((el, id)=>{
                                     return(
-                                        <option key={id} value={el.Code}>{el.Description}</option>
+                                        <option key={id} value={el.Code}>{el.Code} - {el.Description}</option>
                                     )
                                 })
                             }
@@ -98,7 +100,7 @@ function Report(props){
                 </div>
                 <div className="row">
                     <div className="col-md-4">
-                        <button className="btn btn-primary" onClick={getData}>Search</button>
+                        <button className="btn btn-primary" onClick={getDataReport}>Search</button>
                     </div>
                 </div>
                 {

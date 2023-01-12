@@ -20,6 +20,8 @@ function Home(){
         if (!isChecked){
             return 
         }
+        // console.log(dataReport)
+        // return
         if(load.current === false){
             load.current = true
             try{
@@ -43,14 +45,9 @@ function Home(){
         let data = [...dataReport]
         let isChecked=false
         data = data.map((el,index)=>{
-            if(i===index){
-                if(!el.check){
-                    isChecked =  true
-                }
-                return {...el,check:!el.check}
-            }
-            return el
+            return {...el, check:i===index?!el.check:el.check}
         })
+        isChecked = data.some(el=>el.check)
         setIsChecked(isChecked)
         setDataReport(data)
     }
@@ -65,47 +62,12 @@ function Home(){
             setIsChecked(false)
             setTotalPage(total_page)
         }catch(err){
+            alert("Gagal mendapatkan data")
             console.log(err)
         }
         
     }
-    const paginate = ()=>{
-        let next =[]
-        if(page !== 1){
-            next.push(
-                <li key={1} className="page-item"><a className="page-link" href="#" onClick={()=>changePage(1)}>1</a></li>
-            )
-        }
-        let min = (page -2 < 1)? 1 : page -2
-        if(min-2 <= 1){
-            next.push(
-                <li key={1000} className="page-item  disabled"><a className="page-link" href="#">...</a></li>
-            )
-        }
-        for(let i=min;i<page; i++){
-            next.push(
-                <li  key={i} className="page-item"><a className="page-link" href="#" onClick={()=>changePage(i)}>{i}</a></li>
-            )
-        }
-        next.push(<li className="page-item active"><a className="page-link" href="#">{page}</a></li>)
-        let max = (page+2 > totalPage)?totalPage : (page+2)
-        for(let i=page+1;i < max+1;i++){
-            next.push(
-                <li key={i} className="page-item"><a className="page-link" href="#" onClick={()=>changePage(i)}>{i}</a></li>
-            )
-        }
-        if(max+1 !== 10){
-            next.push(
-                <li key={1001} className="page-item  disabled"><a className="page-link" href="#">...</a></li>
-            )
-        }
-        if(page !== totalPage){
-            next.push(
-                <li key={totalPage} className="page-item"><a className="page-link" href="#" onClick={()=>changePage(totalPage)}>{totalPage}</a></li>
-            )
-        }
-        return next
-    }
+    
     
     return(
         <div className="mt-3">

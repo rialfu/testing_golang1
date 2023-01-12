@@ -34,7 +34,7 @@ func (r *repository) GetCompany() ([]model.MstCompanyTab, error){
 }
 func (r *repository) GetBranch() ([]model.BranchTab, error){
 	var data []model.BranchTab
-	res := r.db.Find(&data)
+	res := r.db.Order("code").Find(&data)
 	if res.Error != nil{
 		return []model.BranchTab{}, res.Error
 	}
@@ -110,9 +110,9 @@ func (r *repository) UpdateChecklistPencairan(fields []string, values []interfac
 	if res.Error != nil{
 		return res.Error
 	}
-	sql :=r.db.ToSQL(func(tx *gorm.DB) *gorm.DB {
-		return tx.Model(&model.CustomerDataTab{}).Where(strings.Join(fields, " AND "), values...).Update("approval_status","0")
-	}) 
-	fmt.Println(sql)
+	// sql :=r.db.ToSQL(func(tx *gorm.DB) *gorm.DB {
+	// 	return tx.Model(&model.CustomerDataTab{}).Where(strings.Join(fields, " AND "), values...).Update("approval_status","0")
+	// }) 
+	// fmt.Println(sql)
 	return nil
 }

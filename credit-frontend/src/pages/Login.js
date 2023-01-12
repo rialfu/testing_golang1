@@ -24,11 +24,13 @@ export default function Login(){
         
         if(loadRef.current === false){
             loadRef.current = true
+            
             if(username === "" || password ===""){
                 
                 loadRef.current = false
                 return
             }
+            setLoad(true)
             try{
                 const res =  await axios.post("http://localhost:8080/login",JSON.stringify({username, password}))
                 const {token, data} = res.data
@@ -47,7 +49,7 @@ export default function Login(){
                 }
                 console.log()
             }
-            
+            setLoad(false)
             loadRef.current = false
             return
             
@@ -60,6 +62,11 @@ export default function Login(){
     const eventBlur = (id)=>{
         if((id==='p1' && username==="") || (id==='p2' && password === ''))
             document.getElementById(id).style.top="10%"
+    }
+    const eventKeyDown = (e)=>{
+        if(e.key==='Enter'){
+            login()
+        }
     }  
     // let loadHTML=load?(<div style={{width:"100%", height:"100vh", position:"fixed",background:"rgba(204, 66, 24, 0.5)"}}>
     //         {/* <h1>Res</h1> */}
@@ -86,14 +93,23 @@ export default function Login(){
                     <p className="mb-4">Welcome to My Life</p>
                     <div className="input-group1">
                         <label htmlFor="userid" className="placeholder" id="p1">Username</label>
-                        <input type="text" name="username" className="in" onFocus={()=>eventFocus('p1')} onBlur={()=>eventBlur('p1')}  onChange={(e)=>{setUsername(e.target.value)}} />
+                        <input type="text" name="username" className="in" 
+                            onFocus={()=>eventFocus('p1')} 
+                            onBlur={()=>eventBlur('p1')} 
+                            onChange={(e)=>{setUsername(e.target.value)}}
+                            onKeyDown={eventKeyDown}
+                        />
                         
                     </div>
                     <div className="input-group1">
                         <label htmlFor="password" className="placeholder" id="p2">Password</label>
-                        <input type="password" name="password" className="in" onFocus={()=>eventFocus('p2')} onBlur={()=>eventBlur('p2')} onChange={(e)=>{setPassword(e.target.value)}}/>
+                        <input type="password" name="password" className="in" 
+                            onFocus={()=>eventFocus('p2')} onBlur={()=>eventBlur('p2')} 
+                            onChange={(e)=>{setPassword(e.target.value)}}
+                            onKeyDown={eventKeyDown}
+                        />
                     </div>
-                    <button className="btn btn-primary w-100 mb-4" onClick={login}>Login </button>
+                    <button className="btn btn-primary w-100 mb-4" disabled={load} onClick={login}>Login </button>
                 </div>
             </div>
         </div>
