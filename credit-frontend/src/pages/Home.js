@@ -4,7 +4,7 @@ import Pagination, { bootstrap5PaginationPreset } from 'react-responsive-paginat
 function Home(){
     const[dataReport, setDataReport] = useState([])
     const [totalPage, setTotalPage] = useState(0)
-    const [page, setPage] = useState(3)
+    const [page, setPage] = useState(1)
     const limit =useRef(5)
     const load = useRef(false)
     const [isChecked, setIsChecked] = useState(false)
@@ -87,15 +87,15 @@ function Home(){
                             <table className=" table">
                                 <thead>
                                     <tr>
-                                        <th width={70}>No</th>
-                                        <th width={170}>PPK</th>
-                                        <th width={190}>Name</th>
-                                        <th width={130}>Channeling Company</th>
-                                        <th width={190}>Drawdown Date</th>
-                                        <th width={190}>Loan Amount</th>
-                                        <th width={190}>Loan Period</th>
-                                        <th width={190}>Interest Eff</th>
-                                        <th width={190}>action</th>
+                                        <th style={{fontSize:"1vw"}} width={70}>No</th>
+                                        <th style={{fontSize:"1vw"}} width={170}>PPK</th>
+                                        <th style={{fontSize:"1vw"}} width={190}>Name</th>
+                                        <th style={{fontSize:"1vw"}} width={130}>Channeling Company</th>
+                                        <th style={{fontSize:"1vw"}} width={190}>Drawdown Date</th>
+                                        <th style={{fontSize:"1vw"}} width={190}>Loan Amount</th>
+                                        <th style={{fontSize:"1vw"}} width={190}>Loan Period</th>
+                                        <th style={{fontSize:"1vw"}} width={190}>Interest Eff</th>
+                                        <th style={{fontSize:"1vw"}} width={190}>action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -105,15 +105,15 @@ function Home(){
                                             // console.log((page.current - 1) * limit)
                                             return(
                                                 <tr key={i}>
-                                                    <td>{no}</td>
-                                                    <td>{data.ppk}</td>
-                                                    <td>{data.name}</td>
-                                                    <td>{data.channeling_company}</td>
-                                                    <td>{data.drawdown_date.substring(0,10)}</td>
-                                                    <td>{data.loan_amount}</td>
-                                                    <td>{data.loan_period}</td>
-                                                    <td>{data.interest_effective}</td>
-                                                    <td> 
+                                                    <td style={{fontSize:"1vw"}} >{no}</td>
+                                                    <td style={{fontSize:"1vw"}} >{data.ppk}</td>
+                                                    <td style={{fontSize:"1vw"}} >{data.name}</td>
+                                                    <td style={{fontSize:"1vw"}} >{data.channeling_company}</td>
+                                                    <td style={{fontSize:"1vw"}} >{data.drawdown_date.substring(0,10)}</td>
+                                                    <td style={{fontSize:"1vw"}} >{data.loan_amount}</td>
+                                                    <td style={{fontSize:"1vw"}} >{data.loan_period}</td>
+                                                    <td style={{fontSize:"1vw"}} >{data.interest_effective}</td>
+                                                    <td style={{fontSize:"1vw"}} > 
                                                         <div className="form-check">
                                                             <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" onChange={()=>checked(i)} checked={data.check}/>
                                                                 <label className="form-check-label"  htmlFor="flexCheckDefault">
