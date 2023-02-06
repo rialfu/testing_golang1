@@ -100,7 +100,7 @@ function Report(props){
                 </div>
                 <div className="row">
                     <div className="col-md-4">
-                        <button className="btn btn-primary" onClick={getDataReport}>Search</button>
+                        <button className="btn btn-primary" onClick={()=>setPage(1)}>Search</button>
                     </div>
                 </div>
                 {

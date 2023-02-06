@@ -50,6 +50,7 @@ func(r *repository) getDataReport(page int, length int, fields []string, values 
 	Joins("join mst_company_tab as a on customer_data_tab.channeling_company = a.company_short_name").
 	Joins("join branch_tab on branch_tab.code = loan_data_tab.branch").
 	Where(strings.Join(fields, " AND "), values...).
+	Order("drawdown_date desc").
 	Find(&rd)
 	if tx.Error != nil {
 		fmt.Println("error get data")
@@ -81,6 +82,7 @@ func (r *repository) getDataChecklistPencairan(page int, length int, fields []st
 	Select("loan_data_tab.custcode, ppk, name, channeling_company, drawdown_date, loan_amount, loan_period,interest_effective, approval_status").
 	Joins("join loan_data_tab on loan_data_tab.custcode=customer_data_tab.custcode").
 	Where(strings.Join(fields, " AND "), values...).
+	Order("drawdown_date desc").
 	Find(&rd)
 	if tx.Error != nil {
 		fmt.Println("error get data")
@@ -98,6 +100,7 @@ func (r *repository) getTotalDataChecklistPencairan(fields []string, values []in
 	Select("count(loan_data_tab.custcode) as total").
 	Joins("join loan_data_tab on loan_data_tab.custcode=customer_data_tab.custcode").
 	Where(strings.Join(fields, " AND "), values...).
+	
 	Scan(&result)
 	if tx.Error != nil {
 		return 0, tx.Error

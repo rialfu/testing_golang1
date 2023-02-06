@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom'
     const send = async()=>{
         const data = {username:state.user.username, old:form.oldpass, new:form.newpass}
         try{
-            const res = await axios.post("http://localhost:8080/update-password", JSON.stringify(data))
+            await axios.post("http://localhost:8080/update-password", JSON.stringify(data))
             localStorage.removeItem("account")
             dispatch({type:"logout"}); 
             alert("Berhasil update")

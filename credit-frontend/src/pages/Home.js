@@ -4,7 +4,7 @@ import Pagination, { bootstrap5PaginationPreset } from 'react-responsive-paginat
 function Home(){
     const[dataReport, setDataReport] = useState([])
     const [totalPage, setTotalPage] = useState(0)
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(3)
     const limit =useRef(5)
     const load = useRef(false)
     const [isChecked, setIsChecked] = useState(false)
@@ -76,6 +76,7 @@ function Home(){
                 {
                     dataReport.length === 0 ?
                     <>
+                        <button className="btn btn-primary" onClick={()=>setPage(1)}>Refresh</button>
                         <h3 className="text-center">Data Kosong</h3>
                     </>:
                     <>

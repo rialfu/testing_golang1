@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useStore } from "../Context/context"
 import  '../assets/custom.css'
-import '../assets/login.css'
+import styles from '../assets/login.css'
 import { useNavigate } from "react-router-dom"
 import axios from 'axios'
 export default function Login(){
@@ -89,8 +89,8 @@ export default function Login(){
             <div className="col-6 right-side">
                 <div className="login-content">
                     <img className="mb-4" src={window.location.origin+"/logo.png"} style={{maxHeight:"50px"}} alt="" />
-                    <h2 className="mb-1">Hello Madafak</h2>
-                    <p className="mb-4">Welcome to My Life</p>
+                    <h2 className="mb-1">Hello Sir</h2>
+                    <p className="mb-4">Welcome to Portal</p>
                     <div className="input-group1">
                         <label htmlFor="userid" className="placeholder" id="p1">Username</label>
                         <input type="text" name="username" className="in" 
